@@ -1,0 +1,22 @@
+td {
+    border: 3px solid black;
+    padding: 10px;
+    border-collapse: separate;
+    margin: 10px;
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+    text-align: center;
+    empty-cells: show;
+}
+
+
+body {
+    text-align: center;
+}
+
+table {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}

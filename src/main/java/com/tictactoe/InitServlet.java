@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet(name = "InitServlet", value = "/start")
 public class InitServlet extends HttpServlet {
@@ -17,7 +16,6 @@ public class InitServlet extends HttpServlet {
         HttpSession currentSession = req.getSession(true);
 
         Field field = new Field();
-        Map<Integer, Sign> fieldData = field.getField();
 
         List<Sign> data = field.getFieldData();
 

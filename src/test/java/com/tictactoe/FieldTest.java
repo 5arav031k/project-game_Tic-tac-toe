@@ -1,5 +1,6 @@
 package com.tictactoe;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -13,16 +14,21 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 class FieldTest {
 
+    public Field field;
+    @BeforeEach
+    void init() {
+        field = new Field();
+    }
+
     @Test
     void allFieldCellsShouldBeEmptyWhenFieldCreated() {
-        Map<Integer, Sign> field = new Field().getField();
-        field.forEach((integer, sign) -> assertSame(sign, Sign.EMPTY));
+        Map<Integer, Sign> fieldMap = field.getField();
+        fieldMap.forEach((integer, sign) -> assertSame(sign, Sign.EMPTY));
     }
 
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8})
     void shouldReturnRightEmptyFieldIndex(int fieldIndex) {
-        Field field = new Field();
         field.getField().forEach((integer, sign) -> {
             if (integer != fieldIndex) {
                 field.getField().put(integer, Sign.CROSS);
@@ -35,7 +41,6 @@ class FieldTest {
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8})
     void getFieldData(int fieldIndex) {
-        Field field = new Field();
         field.getField().forEach((integer, sign) -> {
             if (integer != fieldIndex) {
                 field.getField().put(integer, integer % 2 == 0 ? Sign.NOUGHT : Sign.CROSS);
@@ -66,7 +71,6 @@ class FieldTest {
             "2, 4, 6"
     })
     void shouldReturnCROSSSignWhenCalledCheckWin(int firstFieldIndex, int secondFieldIndex, int thirdFieldIndex) {
-        Field field = new Field();
         field.getField().put(firstFieldIndex, Sign.CROSS);
         field.getField().put(secondFieldIndex, Sign.CROSS);
         field.getField().put(thirdFieldIndex, Sign.CROSS);
@@ -86,7 +90,6 @@ class FieldTest {
             "2, 4, 6"
     })
     void shouldReturnNOUGHTSignWhenCalledCheckWin(int firstFieldIndex, int secondFieldIndex, int thirdFieldIndex) {
-        Field field = new Field();
         field.getField().put(firstFieldIndex, Sign.NOUGHT);
         field.getField().put(secondFieldIndex, Sign.NOUGHT);
         field.getField().put(thirdFieldIndex, Sign.NOUGHT);

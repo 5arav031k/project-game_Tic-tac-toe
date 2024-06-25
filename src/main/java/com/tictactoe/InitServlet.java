@@ -1,5 +1,8 @@
 package com.tictactoe;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +14,8 @@ import java.util.List;
 
 @WebServlet(name = "InitServlet", value = "/start")
 public class InitServlet extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(InitServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession currentSession = req.getSession(true);
@@ -22,6 +27,7 @@ public class InitServlet extends HttpServlet {
         currentSession.setAttribute("field", field);
         currentSession.setAttribute("data", data);
 
+        LOGGER.info("Game started, field initialized");
         getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 }

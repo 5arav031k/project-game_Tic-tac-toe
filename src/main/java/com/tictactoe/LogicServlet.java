@@ -1,5 +1,8 @@
 package com.tictactoe;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +15,8 @@ import java.util.List;
 
 @WebServlet(name = "LogicServlet", value = "/logic")
 public class LogicServlet extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(LogicServlet.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession currentSession = req.getSession(true);
@@ -21,6 +26,7 @@ public class LogicServlet extends HttpServlet {
         Sign currentSign = field.getField().get(index);
 
         if (Sign.EMPTY != currentSign) {
+            LOGGER.debug("Clicked on not EMPTY sign");
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
             dispatcher.forward(req, resp);
             return;
@@ -28,6 +34,8 @@ public class LogicServlet extends HttpServlet {
 
         field.getField().put(index, Sign.CROSS);
         if (checkWin(resp, currentSession, field)) {
+            LOGGER.info("Game ended");
+            LOGGER.debug("Player won");
             return;
         }
 
@@ -35,6 +43,8 @@ public class LogicServlet extends HttpServlet {
         if (emptyFieldIndex >= 0) {
             field.getField().put(emptyFieldIndex, Sign.NOUGHT);
             if (checkWin(resp, currentSession, field)) {
+                LOGGER.info("Game ended");
+                LOGGER.debug("Computer won");
                 return;
             }
         } else {
@@ -59,6 +69,7 @@ public class LogicServlet extends HttpServlet {
         Object fieldAttribute = currentSession.getAttribute("field");
         if (fieldAttribute.getClass() != Field.class) {
             currentSession.invalidate();
+            LOGGER.error("Session is broken");
             throw new RuntimeException("Session is broken, try one more time");
         }
         return (Field) fieldAttribute;
